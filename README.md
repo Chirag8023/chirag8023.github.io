@@ -3,7 +3,7 @@
 Follow these steps to properly add a new blog post:  
 
 ## **1️⃣ Create the Blog Folder**  
-- Name the folder **using the actual blog title**.  
+- Name the folder **using the actual blog title** in `posts` folder.  
 - Use **lowercase letters**, **no symbols**, and **no spaces**.  
 - Separate words with a **hyphen (`-`)**.  
 - **Example:**  
@@ -42,7 +42,7 @@ Follow these steps to properly add a new blog post:
     "tags": ["Tag1", "Tag2"]
 },
 ```
-- **`id`** → Whatever id of topmost entry + 1
+- **`id`** → Put Id number here which you get by adding 1 to current top most json object's id.
 - **`title`** → Write the main blog title (with spaces, CamelCase, or PascalCase).  
 - **`date`** → Format as `DD/MM/YYYY`.  
 - **`file`** → Path to the `README.md` file inside the blog folder.  

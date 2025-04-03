@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'none';">
     <title>Chirag8023 CyberBlog</title>
     <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap">
@@ -23,7 +24,8 @@
                 </ul>
             </nav>
             <div class="social-links">
-                <a href="https://x.com/Chirag8023" target="_blank"><img src="/assets/images/x.svg"></a> <a href="https://github.com/Chirag8023" target="_blank"><img src="/assets/images/github.svg"></a>
+                <a href="https://x.com/Chirag8023" target="_blank" rel="noopener noreferrer"><img src="/assets/images/x.svg"></a>
+                <a href="https://github.com/Chirag8023" target="_blank" rel="noopener noreferrer"><img src="/assets/images/github.svg"></a>
             </div>
         </aside>
         <main class="content">
@@ -33,7 +35,7 @@
             </div>
 
             <div class="main-content">
-            <h1 style="font-size: 3rem; margin-top: 0;" id="main-content-heading">About me</h1>
+            <h1 style="font-size: 3rem; margin-top: 0;">About me</h1>
             <div id="post-content">
                 <strong>Chirag Arora</strong> (<i>He/Him</i>)<br><br>
                 <strong>Computer Science (2021-24)</strong><br><br>
@@ -41,7 +43,7 @@
                 Currently getting into web security and Linux (<i>yes, i use Kali Linux</i>).<br><br>
                 Got tired of virtual events, would love to attend DEFCON. (<i>want to sponsor me? let's talk!</i>)<br><br>
                 Probably playing Skyrim or Fallout right now.<br><br>
-                DM me on Twitter(X) <a href="https://x.com/chirag8023" target="_blank">@chirag8023</a> or just drop an email at <a href="https://gmail.com" target="_blank">chirag8023@gmail.com</a> !
+                DM me on Twitter(X) <a href="https://x.com/chirag8023" target="_blank" rel="noopener noreferrer">@chirag8023</a> or just drop an email at <span id="email"></span> !
             </div>
 
             <footer>
@@ -58,6 +60,8 @@
             sidebar.classList.toggle("hide");
             content.classList.toggle("hide");
         }
+        document.getElementById("email").innerHTML =
+        '<a href="mailto:' + 'chirag8023' + '@' + 'gmail.com">chirag8023@gmail.com</a>';
     </script>
 
 </body>

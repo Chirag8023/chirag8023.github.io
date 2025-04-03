@@ -35,7 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
             displayPosts();
             renderPagination();
         })
-        .catch(error => console.error("Error loading posts:", error));
+        .catch(error => {
+            postsList.innerHTML = "<p>⚠️ Unable to load posts. Please try again later.</p>";
+            console.error("Error loading posts:", error);
+        });
 
     function displayPosts() {
         let currentPage = getCurrentPage();
