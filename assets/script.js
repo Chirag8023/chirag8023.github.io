@@ -11,19 +11,34 @@ document.addEventListener("DOMContentLoaded", function () {
     let paginationContainer = document.getElementById("pagination");
 
     let posts = [];
-    let currentPage = 1;
     const itemsPerPage = 7;
+
+    // Function to get URL parameters
+    function getCurrentPage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        let page = parseInt(urlParams.get("page"));
+        return Number.isNaN(page) || page < 1 ? 1 : page;
+    }
+
+    function setPage(page) {
+        const url = new URL(window.location.href);
+        url.searchParams.set("page", page);
+        window.history.pushState({}, "", url);
+        displayPosts();
+        renderPagination();
+    }
 
     fetch("/assets/posts.json")
         .then(response => response.json())
         .then(data => {
             posts = data;
-            renderPagination();
             displayPosts();
+            renderPagination();
         })
         .catch(error => console.error("Error loading posts:", error));
 
     function displayPosts() {
+        let currentPage = getCurrentPage();
         postsList.innerHTML = "";
         let start = (currentPage - 1) * itemsPerPage;
         let end = start + itemsPerPage;
@@ -67,6 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
         paginationContainer.style.gap = "1rem";
 
         let totalPages = Math.ceil(posts.length / itemsPerPage);
+        let currentPage = getCurrentPage();
 
         if (totalPages > 1) {
             let prevButton = document.createElement("button");
@@ -75,9 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
             prevButton.disabled = currentPage === 1;
             prevButton.addEventListener("click", function () {
                 if (currentPage > 1) {
-                    currentPage--;
-                    displayPosts();
-                    renderPagination();
+                    setPage(currentPage - 1);
                 }
             });
 
@@ -91,9 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
             nextButton.disabled = currentPage === totalPages;
             nextButton.addEventListener("click", function () {
                 if (currentPage < totalPages) {
-                    currentPage++;
-                    displayPosts();
-                    renderPagination();
+                    setPage(currentPage + 1);
                 }
             });
 
@@ -105,5 +117,11 @@ document.addEventListener("DOMContentLoaded", function () {
             paginationContainer.appendChild(nextButton);
         }
     }
+
+    // Handle back/forward navigation
+    window.addEventListener("popstate", function () {
+        displayPosts();
+        renderPagination();
+    });
 
 });
