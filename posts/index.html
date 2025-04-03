@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chirag8023 CyberBlog</title>
+    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap">
+    <link rel="stylesheet" href="/assets/style.css">
+    <script src="/assets/markdown-it.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <img src="https://avatars.githubusercontent.com/u/84070677?v=4" alt="Profile Picture" class="profile-pic">
+            <h2>Chirag Arora</h2>
+            <p>ctf | bug bounty <br> learning to code 🍜</p>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/aboutme/">About Me</a></li>
+                </ul>
+            </nav>
+            <div class="social-links">
+                <a href="https://x.com/Chirag8023" target="_blank"><img src="/assets/images/x.svg"></a>
+                <a href="https://github.com/Chirag8023" target="_blank"><img src="/assets/images/github.svg"></a>
+            </div>
+        </aside>
+        <main class="content">
+            <div class="header">
+                <button class="burger-btn" onclick="toggleSidebar()"><img src="/assets/images/hamburger.svg" style="width: 1.6rem;"></button>
+                Chirag8023 CyberBlog
+            </div>
+            <div class="main-content">
+            <div id="post-content"></div>
+
+            <footer>
+                <span style="font-size: 22px;">©</span> 2025 Made with ♥️ by Chirag Arora 
+            </footer>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            sidebar.classList.toggle("hide");
+            content.classList.toggle("hide");
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            let id = urlParams.get('id');
+            id = id && /^\d+$/.test(id) ? parseInt(id) : null;
+
+            const postContent = document.getElementById("post-content");
+            let md = new markdownit();
+
+            fetch('/assets/posts.json')
+                .then(response => response.json())
+                .then(data => {
+                    const post = data.find(post => post.id == id);
+                    if (post) {
+                        loadMarkdown(post);
+                    } else {
+                        postContent.innerHTML = "<p>Post not found.</p>";
+                    }
+                })
+                .catch(error => {
+                    postContent.innerHTML = "<p>Failed to load the blog post. Please try again later.</p>";
+                    console.error("Error loading posts:", error);
+                });
+
+            function loadMarkdown(post) {
+            fetch(post.file)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to load ${post.file}`);
+                    }
+                    return response.text();
+                })
+                .then(markdown => {
+                    postContent.innerHTML = `
+
+                        <p style="font-size: 15px; font-weight: 500; margin: 0;">${post.date}</p>
+                        <p style="font-size: 32px; margin: 0; font-weight: bold;">${post.title}</p>
+                        <p style="font-size: 18px; font-weight: 500; margin: 1rem 0;"><span style="letter-spacing: -3px;">(-_-)</span> : Chirag Arora</p>
+                        <hr style="margin: 0; margin-bottom: 3rem; border: 1px solid black;">
+                        <div id="blog-text">${md.render(markdown)}</div>
+                    `;
+                })
+                .catch(error => {
+                    postContent.innerHTML = "<p>Failed to load the blog post. Please try again later.</p>";
+                    console.error("Error loading Markdown file:", error);
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>
